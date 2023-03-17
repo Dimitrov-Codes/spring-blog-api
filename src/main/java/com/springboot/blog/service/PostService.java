@@ -83,8 +83,7 @@ public class PostService {
         Page<Post> posts = postRepository.findAll(pageRequest);
         List<PostDTO> listOfPosts = posts.getContent().stream().map(this::mapToDTO).collect(Collectors.toList());
 
-        return new PostPage(listOfPosts, posts.getNumber(), posts.getSize(),
-                posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
+        return new PostPage(listOfPosts, posts.getNumber(), posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
 
 
     }

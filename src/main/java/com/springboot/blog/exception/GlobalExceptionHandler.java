@@ -3,6 +3,7 @@ package com.springboot.blog.exception;
 import com.springboot.blog.dto.ErrorDetails;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,8 +30,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
+
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest webRequest) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
+                                                                  HttpStatusCode status, WebRequest request) {
         HashMap<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
@@ -38,6 +41,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             errors.put(fieldName, message);
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+
     }
 
     @ExceptionHandler(Exception.class)

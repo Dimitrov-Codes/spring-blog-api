@@ -15,6 +15,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final ModelMapper mapper;
+
     public CommentService(CommentRepository commentRepository,
                           PostRepository postRepository, ModelMapper mapper) {
         this.commentRepository = commentRepository;
@@ -22,7 +23,7 @@ public class CommentService {
         this.mapper = mapper;
     }
 
-    public CommentDTO addComment(Long postId, CommentDTO commentDTO){
+    public CommentDTO addComment(Long postId, CommentDTO commentDTO) {
         Comment comment = mapToEntity(commentDTO);
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
         comment.setPost(post);
@@ -39,14 +40,17 @@ public class CommentService {
     }
 
     public CommentDTO deleteComment(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new BadRequestException("Comment","id",commentId));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new BadRequestException("Comment", "id", commentId));
         commentRepository.deleteById(commentId);
         return mapToDTO(comment);
     }
 
     public CommentDTO updateComment(CommentDTO commentDTO, Long id) {
         Comment detachedComment = mapToEntity(commentDTO);
-        detachedComment.setId(id);
-        return mapToDTO(commentRepository.save(detachedComment));
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", id));
+        comment.setBody(detachedComment.getBody());
+        comment.setName(detachedComment.getName());
+        comment.setEmail(detachedComment.getEmail());
+        return mapToDTO(commentRepository.save(comment));
     }
 }

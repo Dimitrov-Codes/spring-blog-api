@@ -7,7 +7,7 @@ import com.springboot.blog.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +22,7 @@ public class CommentController {
         this.commentRepository = commentRepository;
     }
 
-    @GetMapping("getAllComments/}")
+    @GetMapping("getAllComments")
     public List<CommentDTO> getAllCommentsFromPost() {
         return commentRepository.findAll().stream().map(commentService::mapToDTO).collect(Collectors.toList());
     }
