@@ -3,11 +3,12 @@ package com.springboot.blog.controller;
 import com.springboot.blog.dto.PostDTO;
 import com.springboot.blog.dto.PostPage;
 import com.springboot.blog.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,11 +37,13 @@ public class PostController {
         return postService.getPostsByPage(pageNo, pageSize, sortBy, sortDir);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PostDTO> createPost(@RequestBody @Valid PostDTO postDto) {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PostDTO> updatePost(@RequestBody @Valid PostDTO postDto, @PathVariable(name = "id") long id) {
 
@@ -49,8 +52,8 @@ public class PostController {
         return new ResponseEntity<>(postResponse, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") long id) {
 
         postService.deletePostById(id);

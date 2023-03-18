@@ -3,7 +3,7 @@ package com.springboot.blog.service;
 import com.springboot.blog.dto.PostDTO;
 import com.springboot.blog.dto.PostPage;
 import com.springboot.blog.exception.ResourceNotFoundException;
-import com.springboot.blog.models.Post;
+import com.springboot.blog.models.blog.Post;
 import com.springboot.blog.repository.PostRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
