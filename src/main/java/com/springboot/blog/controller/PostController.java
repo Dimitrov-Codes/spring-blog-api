@@ -21,7 +21,7 @@ public class PostController {
         this.postService = postService;
     }
 
-
+//    @PreAuthorize("hasRole('USER')")
     @GetMapping("/getAllPosts")
     public List<PostDTO> getAllPosts() {
         return postService.getAllPosts();
