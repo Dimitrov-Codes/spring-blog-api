@@ -37,7 +37,10 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable().authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll().anyRequest().authenticated())
+        httpSecurity.csrf().disable().authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                        .requestMatchers( "/api/auth/**").permitAll() //allows all users to access the login api
+                        .anyRequest().authenticated())
 //                        authorize.anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());
 
