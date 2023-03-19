@@ -7,7 +7,7 @@ import com.springboot.blog.models.user.Role;
 import com.springboot.blog.models.user.User;
 import com.springboot.blog.repository.RoleRepository;
 import com.springboot.blog.repository.UserRepository;
-import org.modelmapper.ModelMapper;
+import com.springboot.blog.security.JWTTokenProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,13 +24,14 @@ public class AuthService {
      private final UserRepository userRepository;
      private final RoleRepository roleRepository;
      private final PasswordEncoder passwordEncoder;
-
+     private final JWTTokenProvider jwtTokenProvider;
      public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository,
-                        RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+                        RoleRepository roleRepository, PasswordEncoder passwordEncoder, JWTTokenProvider jwtTokenProvider) {
           this.authenticationManager = authenticationManager;
           this.userRepository = userRepository;
           this.roleRepository = roleRepository;
           this.passwordEncoder = passwordEncoder;
+          this.jwtTokenProvider = jwtTokenProvider;
      }
 
 
@@ -38,7 +39,8 @@ public class AuthService {
           Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                   loginDTO.getUsernameOrEmail(), loginDTO.getPassword()));
           SecurityContextHolder.getContext().setAuthentication(auth);
-          return "User logged in successfully!";
+          String token = jwtTokenProvider.generateToken(auth);
+          return token;
      }
 
      public String register(RegisterDTO registerDTO) {
