@@ -1,5 +1,6 @@
 package com.springboot.blog.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,5 +20,7 @@ public class PostDTO {
     private String description;
     @NotEmpty(message = "Content should not be empty")
     private String content;
+    @NotNull(message = "Category ID must be mentioned")
+    private Long categoryId;
     private List<CommentDTO> comments;
 }
