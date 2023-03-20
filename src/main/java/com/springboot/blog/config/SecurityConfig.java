@@ -2,6 +2,8 @@ package com.springboot.blog.config;
 
 import com.springboot.blog.security.JWTAuthenticationEntryPoint;
 import com.springboot.blog.security.JWTAuthenticationFilter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,6 +19,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableMethodSecurity
+@SecurityScheme(
+        name = "Bearer Authentication",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer"
+)
 @Configuration
 public class SecurityConfig {
      private final JWTAuthenticationEntryPoint authenticationEntryPoint;
@@ -44,7 +52,9 @@ public class SecurityConfig {
           httpSecurity.csrf().disable()
                   .authorizeHttpRequests(authorize -> authorize
                           .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-                          .requestMatchers("/api/auth/**").permitAll() //allows all users to access the login / register api
+                          .requestMatchers("/api/auth/**").permitAll()//allows all users to access the login / register api
+                          .requestMatchers("/swagger-ui/**").permitAll()
+                          .requestMatchers("/v3/api-docs/**").permitAll()
                           .anyRequest().authenticated())
                   .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                   .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))

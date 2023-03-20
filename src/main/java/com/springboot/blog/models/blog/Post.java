@@ -25,6 +25,7 @@ public class Post {
     private String content;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
