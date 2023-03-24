@@ -61,7 +61,10 @@ public class PostController {
              description = "HTTP Status 200 SUCCESS"
      )
      @GetMapping
-     public PostPage getPostsByPage(@RequestParam(defaultValue = "0", required = false) Integer pageNo, @RequestParam(defaultValue = "10", required = false) Integer pageSize, @RequestParam(defaultValue = "id", required = false) String sortBy, @RequestParam(defaultValue = "asc", required = false) String sortDir) {
+     public PostPage getPostsByPage(@RequestParam(defaultValue = "0", required = false) Integer pageNo,
+                                    @RequestParam(defaultValue = "10", required = false) Integer pageSize,
+                                    @RequestParam(defaultValue = "id", required = false) String sortBy,
+                                    @RequestParam(defaultValue = "asc", required = false) String sortDir) {
           return postService.getPostsByPage(pageNo, pageSize, sortBy, sortDir);
      }
 

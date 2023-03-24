@@ -22,6 +22,7 @@ public class Post {
     private Long id;
     private String title;
     private String description;
+    @Lob
     private String content;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
